@@ -1,5 +1,5 @@
 package ${package}.dao.${sonModule}.mapper;
-import com.icloud.dao.BaseMapper;
+import ${package}.dao.BaseMapper;
 import ${package}.model.${sonModule}.${className};
 
 

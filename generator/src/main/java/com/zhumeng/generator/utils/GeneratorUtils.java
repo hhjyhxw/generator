@@ -126,20 +126,24 @@ public class GeneratorUtils {
         map.put("secondModuleName", toLowerCaseFirstOne(className));//className  首字母小写
         String sonModule = null;
         String sonModule2 = null;
+        String[] sonList = null;//组成表的每个单词
+        String tablePrefix = config.getString("tablePrefix");
         if(tableEntity.getTableName().startsWith("t_")){
             sonModule = tableEntity.getTableName().split("_")[1];
             sonModule2 = tableEntity.getTableName().split("_")[2];
-
+            sonList = tableEntity.getTableName().replaceFirst(tablePrefix,"").split("_");
 //            map.put("sonModule",tableEntity.getTableName().split("_")[1]);//每个表的去掉前缀 的首个单词 作为模块的 包名
 //            map.put("sonModule2",tableEntity.getTableName().split("_")[2]);
         }else {
             sonModule = tableEntity.getTableName().split("_")[0];
             sonModule2 = tableEntity.getTableName().split("_")[1];
+            sonList = tableEntity.getTableName().replaceFirst(tablePrefix,"").split("_");
 //            map.put("sonModule",tableEntity.getTableName().split("_")[0]);//每个表的去掉前缀 的首个单词 作为模块的 包名
 //            map.put("sonModule2",tableEntity.getTableName().split("_")[1]);
         }
         map.put("sonModule",sonModule);//实体 第一个单词  小写
         map.put("sonModule2", sonModule2);//实体 第二个单词 小写
+        map.put("sonList", sonList);//实体 第二个单词 小写
 
         map.put("pageTotal", config.getString("pageTotal"));
         map.put("pagePages", config.getString("pagePages"));
@@ -162,6 +166,7 @@ public class GeneratorUtils {
         map.put("dollarstart2", config.getString("dollarstart2"));
         map.put("dollarsend2", config.getString("dollarsend2"));
 
+
         VelocityContext context = new VelocityContext(map);
         System.out.println("sonModule===="+sonModule);
         //获取模板列表
@@ -174,7 +179,7 @@ public class GeneratorUtils {
 
             try {
                 //添加到zip
-                zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"), config.getString("mainModule"),sonModule,sonModule2)));
+                zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"), config.getString("mainModule"),sonModule,sonModule2,sonList)));
                 IOUtils.write(sw.toString(), zip, "UTF-8");
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
@@ -237,7 +242,7 @@ public class GeneratorUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, String className, String packageName, String moduleName,String sonModule,String sonModule2) {
+    public static String getFileName(String template, String className, String packageName, String moduleName,String sonModule,String sonModule2,String[] sonList) {
         String packagePath = "main" + File.separator + "java" + File.separator;
         String frontPath = "ui" + File.separator;
         String backPagePath = "tempalte" + File.separator;
@@ -254,12 +259,29 @@ public class GeneratorUtils {
 //        }
 
         if (template.contains("list.ftl.vm")) {
-            String newclassName = toLowerCaseFirstOne(className);
-            return backPagePath+sonModule + File.separator +sonModule+ "_" + sonModule2 + "_"+ "list.ftl";
+            String filtPath = backPagePath+sonModule+ File.separator;
+            for (int i=0;i<sonList.length;i++){
+                if(i==sonList.length-1){
+                    filtPath+=sonList[i]+"_list.ftl";
+                }else{
+                    filtPath+=sonList[i]+"_";
+                }
+            }
+            return filtPath;
+//            return backPagePath+sonModule + File.separator +sonModule+ "_" + sonModule2 + "_"+ "list.ftl";
         }
         if (template.contains("input.ftl.vm")) {
-            String newclassName = toLowerCaseFirstOne(className);
-            return backPagePath+sonModule + File.separator +sonModule+ "_" + sonModule2 + "_"+ "input.ftl";
+            String filtPath = backPagePath+sonModule+ File.separator;
+            for (int i=0;i<sonList.length;i++){
+                if(i==sonList.length-1){
+                    filtPath+=sonList[i]+"_input.ftl";
+                }else{
+                    filtPath+=sonList[i]+"_";
+                }
+            }
+            return filtPath;
+//            return backPagePath+sonModule + File.separator +sonModule+ "_" + sonModule2 + "_"+ "input.ftl";
+
         }
 
         if (template.contains("service.java.vm")) {
