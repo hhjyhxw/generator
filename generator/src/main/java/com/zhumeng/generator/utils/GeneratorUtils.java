@@ -297,7 +297,7 @@ public class GeneratorUtils {
             return packagePath + "web" + File.separator + sonModule+File.separator+ className + "Controller.java";
         }
         if (template.contains("mapper.xml.vm")) {
-            return "dao" + File.separator + sonModule+ File.separator + "mapping" + File.separator + className + "Mapper.xml";
+            return packagePath+"dao" + File.separator + sonModule+ File.separator + "mapping" + File.separator + className + "Mapper.xml";
         }
 
         return null;

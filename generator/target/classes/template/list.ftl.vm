@@ -56,9 +56,11 @@
                      <li>开始时间<input type="text" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" id="startTime" name="startTime" value="${dollarstart2}start${dollarsend2}"></li>
                      <li>结束时间<input type="text" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" id="endTime" name="endTime" value="${dollarstart2}end${dollarsend2}"></li>
                      <li><button id="search" >查询</button></li>
-                      <a href="javascript:void();" id="toAdd" class="layui-btn layui-btn-small">
+                     <li style="margin-left: 30px;height: 39px;margin-top: 2.5px;">
+                        <a href="javascript:void();" id="toAdd" class="layui-btn layui-btn-small">
                             <i class="layui-icon">&#xe61f;</i> 添加
                        </a>
+                     </li>
                  </ul>
             </form>
         </fieldset>
@@ -84,6 +86,8 @@
 
                             <th>
                             <div class="layui-btn-group">
+                                 <a href="javascript:toEdit(${dollarstart2}record.id${dollarsend2})"  class="layui-btn layui-btn-mini">修改</a>
+                                 <a href="javascript:delById(${dollarstart2}record.id${dollarsend2})"  class="layui-btn layui-btn-mini">删除</a>
                             </div>
                             </th>
                         </tr>
@@ -147,13 +151,17 @@
             window.location.href = "${request.contextPath}/backpage/${secondModuleName}/toinput?id="+id;
         }
         //删除
+        layui.use(['layer'], function() {
+              var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+        });
+        //删除
         function delById(id){
-            if(confirm("确定要删除？")){
+            if(confirm("删除了不能恢复,确定要删除？")){
                 var url = '${request.contextPath}/backpage/${secondModuleName}/del';
                 $.post(url, {
                     'id':id
-                }, function(ret) {
-                    if(ret == "0000"){
+                }, function(data) {
+                     if("0000"==data.code){
                         layer.msg("删除成功");
                         window.location.href = "${request.contextPath}/backpage/${secondModuleName}/list";
                     }else{
@@ -162,6 +170,7 @@
                 });
             }
         }
+
         layui.use('laydate', function(){
               var laydate = layui.laydate;
               var start = {
