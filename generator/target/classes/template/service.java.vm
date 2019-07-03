@@ -1,0 +1,23 @@
+package ${package}.service.${sonModule};
+
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.icloud.dao..${sonModule}.${className}Mapper;
+import com.icloud.model..${sonModule}.${className};
+import com.icloud.service.BaseServiceImp;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Service
+@Transactional
+public class ${className}Service extends BaseServiceImp<${className}Mapper,${className}> {
+
+}

@@ -1,0 +1,34 @@
+package ${package}.web.${sonModule};
+
+import ${package}.service.${sonModule}.${className}Service;
+import ${package}.model.${sonModule}.${className};
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import com.icloud.web.BaseIdLongController;
+import com.icloud.web.util.Quer
+
+/**
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Controller
+@RequestMapping("${backPath}/${secondModuleName}")
+public class ${className}Controller extends BaseIdLongController<${className}Service,${className}> {
+
+    @Override
+	public String list(${className} t, Map<String, Object> params) {
+		Query query =  new Query(params);
+		PageInfo<${className}> page = baseService.findByPage(query.getPageNum(), query.getPageSize(), t);
+		request.setAttribute("page", page);
+		request.setAttribute("record", t);
+		return "${sonModule}/${sonModule}_${sonModule2}_list";
+	}
+
+	@Override
+	public String toinput(Long id) {
+		${className} ${classname} = ${classname}Service.findByKey(id);
+		request.setAttribute("record", ${classname});
+		return "${sonModule}/${sonModule}_${sonModule2}_input";
+	}
+}
