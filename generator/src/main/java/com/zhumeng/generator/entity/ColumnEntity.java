@@ -12,7 +12,7 @@ public class ColumnEntity {
     private String columnName;
     //列名类型
     private String dataType;
-    //大写列名
+    //jdbcType
     private String jdbcType;
     //列名备注
     private String comments;
